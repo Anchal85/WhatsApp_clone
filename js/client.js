@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const socket = io("http://16.171.150.116:8000");
+    const socket = io("http://13.60.44.89:8000");
 
     const form = document.getElementById('send-container');
     const messageInput = document.getElementById('messageInp');
