@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chatApp</title>
-    
+    <title>Chat App</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="chat.png">
 </head>
+
 <body>
-    <nav>
-        <img class="logo" src="chat.png" alt="">
-        <h1>Welcome to chat application!</h1>
-    </nav>
-    <div class="container">
-        <!-- <div class="message right">Anchal: Hey, how are you?</div>
-        <div class="message left">Ashwani:Hello, I am fine. How are you?</div> -->
-    </div>
 
-    <div class="send">
-        <form action="#" id="send-container">
-            <input type="text" name="messageInp" id="messageInp" placeholder="Type your message">
-            <button class="btn" type="submit">Send</button>
-        </form>
-    </div>
+<nav>
+    <img class="logo" src="chat.png" alt="">
+    <h1>Welcome to chat application!</h1>
+</nav>
 
-   <script src="/socket.io/socket.io.js"></script>
-    <script src="js/client.js"></script>
+<div class="container"></div>
+
+<div class="send">
+    <form id="send-container">
+        <input type="text" name="messageInp" id="messageInp" placeholder="Type your message">
+        <button class="btn" type="submit">Send</button>
+    </form>
+</div>
+
+<!-- IMPORTANT -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/client.js"></script>
+
 </body>
-</html> 
-
+</html>
