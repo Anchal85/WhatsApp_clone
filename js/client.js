@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io('http://localhost:8000');
+    const socket = io('http://16.171.150.116:8000');
 
     //get DOM elements in respective js variables
     const form = document.getElementById('send-container');
