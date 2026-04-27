@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // ✅ IMPORTANT: connect to SAME server
-    const socket = io();
+    const socket = io('http://16.171.20.155:8000');
 
     const form = document.getElementById('send-container');
     const messageInput = document.getElementById('messageInp');
