@@ -1,10 +1,18 @@
+const express = require('express');
 const http = require('http');
-const server = http.createServer();
+const path = require('path');
+const { Server } = require('socket.io');
 
-const io = require('socket.io')(server, {
-    cors: {
-        origin: "*"
-    }
+const app = express();
+const server = http.createServer(app);
+
+// ✅ FIXED path to frontend
+app.use(express.static(path.join(__dirname, '..')));
+
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
 });
 
 const users = {};
@@ -28,6 +36,11 @@ io.on('connection', socket => {
         delete users[socket.id];
     });
 
+});
+
+// ✅ send index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 server.listen(8000, () => {
