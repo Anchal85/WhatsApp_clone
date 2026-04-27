@@ -1,50 +1,34 @@
-// Server to handle socket.io + serve frontend
+//node server which will handle socket.io connections
+// const io = require('socket.io')(8000)
 
-const express = require('express');
-const http = require('http');
-const path = require('path');
 const cors = require('cors');
-
-const app = express();
-const server = http.createServer(app);
-
-// 🔹 Serve frontend (VERY IMPORTANT)
-app.use(express.static(path.join(__dirname, '../')));
-
-// 🔹 Socket.io setup
-const io = require('socket.io')(server, {
+const io = require('socket.io')(8000, {
     cors: {
-        origin: "*",
+        origin: "*", // Allow requests from all origins
         methods: ["GET", "POST"]
     }
 });
 
 const users = {};
 
-// 🔹 Handle connections
-io.on('connection', socket => {
-
-    socket.on('new-user-joined', name => {
-        console.log("new user", name);
-        users[socket.id] = name;
-        socket.broadcast.emit('user-joined', name);
+// if any new user joins, let other users connected to the server know!
+io.on ('connection', socket =>{
+    socket.on('new-user-joined', name =>{
+        console.log("new user", name)
+       users[socket.id] = name;
+       socket.broadcast.emit('user-joined', name);
     });
 
-    socket.on('send', message => {
-        socket.broadcast.emit('receive', {
-            message: message,
-            name: users[socket.id]
-        });
+// if someone sends a message, broadcast it to other people
+    socket.on('send', message =>{
+        socket.broadcast.emit('receive', {message: message, name: users[socket.id]});
+
     });
 
-    socket.on('disconnect', () => {
+// if someone liave the chat, let others know
+    socket.on('disconnect', message =>{
         socket.broadcast.emit('left', users[socket.id]);
         delete users[socket.id];
+
     });
-
-});
-
-// 🔹 Start server
-server.listen(8000, '0.0.0.0', () => {
-    console.log("Server running on port 8000");
-});
+})
