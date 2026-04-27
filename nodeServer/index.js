@@ -1,14 +1,6 @@
-const express = require('express');
 const http = require('http');
-const path = require('path');
+const server = http.createServer();
 
-const app = express();
-const server = http.createServer(app);
-
-// Serve frontend
-app.use(express.static(path.join(__dirname, '..')));
-
-// Socket.io
 const io = require('socket.io')(server, {
     cors: {
         origin: "*"
@@ -38,6 +30,6 @@ io.on('connection', socket => {
 
 });
 
-server.listen(8000, '0.0.0.0', () => {
+server.listen(8000, () => {
     console.log("Server running on port 8000");
 });

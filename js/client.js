@@ -1,53 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // ✅ IMPORTANT: connect to SAME server
     const socket = io("http://13.60.44.89:8000");
 
     const form = document.getElementById('send-container');
     const messageInput = document.getElementById('messageInp');
     const messageContainer = document.querySelector(".container");
 
-    const audio = new Audio('iphone.mp3');
-
+    // append messages
     const append = (message, position) => {
         const messageElement = document.createElement('div');
-
-        messageElement.innerHTML = message.replace(
-            /^(.+?):/,
-            '<b>$1</b>:'
-        );
-
+        messageElement.innerHTML = message;
         messageElement.classList.add('message', position);
         messageContainer.append(messageElement);
-
-        messageContainer.scrollTop = messageContainer.scrollHeight;
-
-        if (position === 'left') {
-            audio.play().catch(() => {});
-        }
     };
 
-    const Name = prompt("Enter your name to join chat");
-    socket.emit('new-user-joined', Name);
+    // ask username
+    const name = prompt("Enter your name");
+    socket.emit('new-user-joined', name);
 
+    // when someone joins
     socket.on('user-joined', name => {
-        append(`${name} joined the chat`, 'right');
+        append(`<b>${name}</b> joined`, 'right');
     });
 
+    // receive message
     socket.on('receive', data => {
-        append(`${data.name}: ${data.message}`, 'left');
+        append(`<b>${data.name}</b>: ${data.message}`, 'left');
     });
 
+    // when someone leaves
     socket.on('left', name => {
-        append(`${name} left the chat`, 'right');
+        append(`<b>${name}</b> left`, 'right');
     });
 
+    // send message
     form.addEventListener('submit', (e) => {
         e.preventDefault();
+        const message = messageInput.value;
 
-        const message = messageInput.value.trim();
-        if (message === "") return;
+        append(`<b>You</b>: ${message}`, 'right');
 
-        append(`You: ${message}`, 'right');
         socket.emit('send', message);
 
         messageInput.value = '';
