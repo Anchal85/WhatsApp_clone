@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageInput = document.getElementById('messageInp');
     const messageContainer = document.querySelector(".container");
 
+
+    // Load old messages
+    socket.on('load-messages', messages => {
+        messages.forEach(msg => {
+            append(`${msg.name}: ${msg.message}`, 'left');
+        });
+    });
+
     // append messages
     const append = (message, position) => {
         const messageElement = document.createElement('div');
