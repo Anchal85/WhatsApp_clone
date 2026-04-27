@@ -8,13 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageContainer = document.querySelector(".container");
 
 
-    // Load old messages
-    socket.on('load-messages', messages => {
-        messages.forEach(msg => {
-            append(`${msg.name}: ${msg.message}`, 'left');
-        });
-    });
-
     // append messages
     const append = (message, position) => {
         const messageElement = document.createElement('div');
@@ -52,6 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
         socket.emit('send', message);
 
         messageInput.value = '';
+    });
+
+    // Load old messages
+    socket.on('load-messages', messages => {
+        messages.forEach(msg => {
+            append(`${msg.name}: ${msg.message}`, 'left');
+        });
     });
 
 });
